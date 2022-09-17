@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+	<body>
+		<canvas id="lab02" width='200' height='100' />		
+		<script>
+			var canvas = document.getElementById("lab02");
+			var ctx = canvas.getContext("2d");
+
+			var img = new Image;
+			img.setAttribute('crossOrigin', 'Anonymous');
+			img.data
+			img.onload = function() {
+						ctx.drawImage(img, 0, 0);
+						var idata = ctx.getImageData(0, 0, 100, 100);
+						
+						var h = canvas.height;
+						var w = canvas.width / 2;
+						
+						var idata1 = ctx.createImageData(w, h);
+						var pixels_count = 2;
+						
+						for (var i=0; i < h; i++) {
+							for (var j=0; j < w - pixels_count + 1; j+=pixels_count) {
+								const arrR = [];
+								const arrG = [];
+								const arrB = [];
+								const arrS = [];
+								
+								for (var k = 0; k < pixels_count; k++) {
+									arrR.push(idata.data[(i * w + j + k) * 4]);
+									arrG.push(idata.data[(i * w + j + k) * 4 + 1]);
+									arrB.push(idata.data[(i * w + j + k) * 4 + 2]);
+									arrS.push(idata.data[(i * w + j + k) * 4 + 3]);
+								}
+								
+								arrR.sort();
+								arrG.sort();
+								arrB.sort();
+								arrS.sort();
+								var mid = Math.floor(pixels_count / 2);
+								for (var k = 0; k < pixels_count; k++) {
+									idata1.data[(i * w + j + k) * 4] = arrR[mid];
+									idata1.data[(i * w + j + k) * 4 + 1] = arrG[mid];
+									idata1.data[(i * w + j + k) * 4 + 2] = arrB[mid];
+									idata1.data[(i * w + j + k) * 4 + 3] = arrS[mid];
+								}
+							}
+						}
+						ctx.putImageData(idata1, 100, 0);
+					};
+				img.src = "https://avatars.githubusercontent.com/u/72094319?v=4";
+		</script>
+	</body>
+</html>
